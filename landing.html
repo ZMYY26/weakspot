@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>错因档案 · 考前只补真正薄弱的地方</title>
+<meta name="description" content="刷题 App 只告诉你这题错了。错因档案记录为什么错、错在哪个环节，AI 归类错因并按遗忘曲线安排复习。">
+<meta name="theme-color" content="#0071e3">
+<meta property="og:title" content="错因档案 · 考前只补真正薄弱的地方">
+<meta property="og:description" content="把做错的题变成一张错因图谱，考前只补真正薄弱的地方。">
+<meta property="og:image" content="assets/shot-home.jpg">
+<link rel="icon" href="assets/icon-192.png">
+<style>
+  :root {
+    --blue: #0071e3;
+    --ink: #0b1220;
+    --muted: #5b6675;
+    --line: #e3e8ef;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--blue); text-decoration: none; }
+  .wrap { width: min(1080px, calc(100% - 40px)); margin: 0 auto; }
+
+  .nav { position: sticky; top: 0; z-index: 10; background: rgba(245, 247, 250, .82); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .brand { display: flex; align-items: center; gap: 9px; font-weight: 800; }
+  .brand img { width: 26px; height: 26px; border-radius: 7px; }
+  .nav-cta { padding: 9px 16px; border-radius: 999px; background: var(--blue); color: #fff; font-size: 14px; font-weight: 700; }
+
+  .hero { padding: 72px 0 48px; text-align: center; }
+  .tag { display: inline-block; padding: 5px 12px; border-radius: 999px; background: rgba(0, 113, 227, .1); color: var(--blue); font-size: 13px; font-weight: 700; }
+  h1 { margin: 18px auto 14px; max-width: 860px; font-size: clamp(28px, 5vw, 52px); line-height: 1.2; letter-spacing: -1px; }
+  h1 em { font-style: normal; color: var(--blue); }
+  .sub { margin: 0 auto; max-width: 640px; color: var(--muted); font-size: clamp(15px, 2vw, 18px); }
+  .cta-row { margin-top: 30px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; border-radius: 14px; font-weight: 700; font-size: 16px; }
+  .btn-primary { background: var(--blue); color: #fff; box-shadow: 0 12px 30px rgba(0, 113, 227, .28); }
+  .btn-ghost { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+  .fine { margin-top: 14px; font-size: 13px; color: var(--muted); }
+
+  .shots { display: flex; gap: 18px; justify-content: center; margin-top: 46px; flex-wrap: wrap; }
+  .shots img { width: min(280px, 42vw); border-radius: 26px; box-shadow: 0 22px 50px rgba(12, 26, 51, .16); border: 1px solid var(--line); }
+
+  section { padding: 64px 0; }
+  .section-title { text-align: center; font-size: clamp(22px, 3vw, 32px); letter-spacing: -.4px; }
+  .section-sub { text-align: center; color: var(--muted); margin-top: 10px; }
+
+  .pain { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 36px; }
+  .pain-card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+  .pain-card b { display: block; margin-bottom: 8px; font-size: 16px; }
+  .pain-card p { color: var(--muted); font-size: 14px; }
+
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 36px; }
+  .step { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+  .step .num { display: inline-flex; width: 30px; height: 30px; align-items: center; justify-content: center; border-radius: 50%; background: rgba(0, 113, 227, .12); color: var(--blue); font-weight: 800; font-size: 14px; }
+  .step b { display: block; margin: 12px 0 8px; font-size: 16px; }
+  .step p { color: var(--muted); font-size: 14px; }
+
+  .quote { margin-top: 36px; background: linear-gradient(135deg, #0b1220, #17233b); color: #fff; border-radius: 18px; padding: 30px; }
+  .quote p { font-size: clamp(16px, 2.2vw, 21px); line-height: 1.7; }
+  .quote span { display: block; margin-top: 12px; color: #9fb2cc; font-size: 14px; }
+
+  .subjects { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 26px; }
+  .chip { padding: 8px 16px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: 14px; }
+
+  .faq { margin-top: 34px; display: grid; gap: 12px; }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+  summary { cursor: pointer; font-weight: 700; }
+  details p { margin-top: 10px; color: var(--muted); font-size: 14px; }
+
+  .final { text-align: center; padding: 72px 0 88px; }
+  footer { border-top: 1px solid var(--line); padding: 26px 0; color: var(--muted); font-size: 13px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="brand"><img src="assets/icon-192.png" alt="">错因档案</div>
+    <a class="nav-cta" href="./index.html">打开应用</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="tag">给正在考资格证 / 考研的你</span>
+    <h1>刷题 App 只告诉你"这题错了"<br>我们管的是<em>下一层：为什么错</em></h1>
+    <p class="sub">你刷 1000 道题，系统只记录"你错了 200 道"。真正决定下次对错的，是这 200 道里有多少是<strong>同一个错因</strong>。</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="./index.html">开始建档案（免注册）</a>
+      <a class="btn btn-ghost" href="#how">看看怎么用</a>
+    </div>
+    <p class="fine">数据存在你自己的浏览器里，不上传服务器 · 可装到手机主屏</p>
+  </div>
+  <div class="wrap shots">
+    <img src="assets/shot-home.jpg" alt="今日复习清单与错因库">
+    <img src="assets/shot-detail.jpg" alt="错因详情：我的答案与正确答案">
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2 class="section-title">为什么刷到 90% 正确率就上不去了</h2>
+    <p class="section-sub">不是题做得少，是错的题从来没被归类</p>
+    <div class="pain">
+      <div class="pain-card">
+        <b>错题本 ≠ 错因档案</b>
+        <p>你收藏了 200 道错题，但它们混在一起，看不出"我一直栽在同一类地方"。</p>
+      </div>
+      <div class="pain-card">
+        <b>复习靠随机抽</b>
+        <p>翻哪道看哪道，真正该补的那三类错因，一次也没被集中处理过。</p>
+      </div>
+      <div class="pain-card">
+        <b>考前不知道看什么</b>
+        <p>时间只够看一页，但你说不出"我最薄弱的三个考点"是哪三个。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <h2 class="section-title">三步，把错题变成错因图谱</h2>
+    <p class="section-sub">刷完一套卷子，10 分钟就能录完</p>
+    <div class="steps">
+      <div class="step">
+        <span class="num">1</span>
+        <b>连"你当时的答案"一起记</b>
+        <p>只记正确答案没用。要记的是你当时选了什么、为什么选它——错因就藏在这句话里。</p>
+      </div>
+      <div class="step">
+        <span class="num">2</span>
+        <b>AI 归类到具体错因</b>
+        <p>概念混淆 / 审题失误 / 记忆缺口 / 计算错误 / 干扰项识别失败，并给出能背下来的记忆锚点。</p>
+      </div>
+      <div class="step">
+        <span class="num">3</span>
+        <b>按遗忘曲线复习</b>
+        <p>1 / 2 / 4 / 7 / 15 天自动排期。考前一天打开，看到的只有真正没吃透的那几道。</p>
+      </div>
+    </div>
+    <div class="quote">
+      <p>「同一个错因犯三次，不是因为笨，是因为前两次都没人告诉你，那是同一个错因。」</p>
+      <span>错因档案的设计前提</span>
+    </div>
+    <div class="subjects">
+      <span class="chip">教资 · 综合素质</span>
+      <span class="chip">教资 · 教育知识与能力</span>
+      <span class="chip">法考 · 民法</span>
+      <span class="chip">法考 · 刑法</span>
+      <span class="chip">考研政治</span>
+      <span class="chip">其他科目自建</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 class="section-title">常见问题</h2>
+    <div class="faq">
+      <details open>
+        <summary>你们有题库吗？能替代刷题 App 吗？</summary>
+        <p>没有，也不打算做。题库打不过粉笔、万题库，而且你已经在用了。错因档案刻意只做"刷题之后"那一步，可以和任何刷题 App 共存：错题截图或粘贴进来就行。</p>
+      </details>
+      <details>
+        <summary>要花钱吗？要装 App 吗？</summary>
+        <p>不用装 App，浏览器打开就能用，也能"添加到主屏幕"。数据默认存在你自己的设备上，不需要注册账号。</p>
+      </details>
+      <details>
+        <summary>AI 部分是调谁家的模型？</summary>
+        <p>你自己填 API Key（OpenAI 兼容接口都行），请求直接从你的浏览器发出，不经过我们的服务器。没有 Key 也能先体验内置的示例流程。</p>
+      </details>
+      <details>
+        <summary>我的备考资料会泄露吗？</summary>
+        <p>不会。默认纯本地；只有你自己在设置里填了云端账号（Supabase）才会同步，且同步到的是你自己创建的项目。</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<div class="final">
+  <div class="wrap">
+    <h2 class="section-title">考前那一小时，先看自己真正薄弱的地方</h2>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="./index.html">打开错因档案</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span>错因档案 · Weakspot</span>
+    <a href="https://github.com/ZMYY26/weakspot">源码</a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -65,8 +65,18 @@ tests/              ← jsdom 场景测试 + 内存版 Supabase
 3. **自检**：`node scripts/check.mjs`。
 4. **测试**：`npm i -D jsdom fake-indexeddb` 后 `node tests/sync-test.mjs`。
 
+## 桌面端 / 落地页 / 免 Key 体验
+
+- **桌面端**：`@media (min-width: 900px)` 起容器放宽到 1120px，首页拆成两栏
+  （左侧今日复习与概览、右侧错因列表），底部导航收成药丸。手机端布局不变。
+- **落地页**：[landing.html](landing.html)，对外分享用：
+  `https://zmyy26.github.io/weakspot/landing.html`
+- **免 Key 体验**：没有配置 API Key 时，同类变式 / 错因归类会用 `product.js` 里
+  `demo` 的示例结果把流程走完，并在顶部标注「示例结果」。零配置就能体验完整价值。
+
 ## 已知遗留
 
 - `app.js` 仍是单体脚本，内联 `onclick` 让 CSP 无法启用
-- 桌面端还没做响应式（固定 480px 列宽）
-- 详情页悬浮的 + 按钮会遮挡内容
+- 详情页悬浮的 + 按钮在小屏上仍可能遮挡内容
+- 「待复习」计数：首页统计只算今天，导航徽章算今天+明天，两个口径需统一
+
